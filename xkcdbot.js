@@ -1,9 +1,33 @@
+#!/usr/bin/env node
+
 var https = require('https'),
     irc = require('irc'),
-    qs = require('querystring');
+    qs = require('querystring'),
+    options = require('nomnom').opts({
+        host: {
+            abbr: 'H',
+            help: 'IRC network to connect to.'
+        },
+        nick: {
+            abbr: 'n',
+            default: 'xkcdbot',
+            help: 'IRC nickname.'
+        },
+        channels: {
+            abbr: 'c',
+            help: 'Channels to join. Comma-separated, no #.'
+        }
+    }).parseArgs();
 
-var ircClient = new irc.Client('irc.mozilla.org', 'xkcdbot', {
-    'channels': ['#webdev', '#sumodev'],
+
+var channels = options.channels.split(',');
+for (var i = 0; i < channels.length; i++) {
+    var c = channels[i];
+    channels[i] = '#' + c.trim();
+}
+
+var ircClient = new irc.Client(options.host, options.nick, {
+    'channels': channels,
 }).addListener('error', function(err) {
     if (err.rawCommand != '421') console.log(err);
 }).addListener('message', function(from, to, msg) {
