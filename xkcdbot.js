@@ -67,7 +67,11 @@ var ircClient = new irc.Client(options.host, options.nick, {
                     break;
                 }
             }
-            ircClient.say(to, title + ' ' + url);
+            if (title && url) {
+                ircClient.say(to, title + ' ' + url);
+            }
         });
     });
+}).addListener('invite', function(channel, from) {
+    ircClient.join(channel, function() {});
 });
