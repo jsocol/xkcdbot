@@ -26,6 +26,8 @@ for (var i = 0; i < channels.length; i++) {
     channels[i] = '#' + c.trim();
 }
 
+var nickRe = new RegExp('^' + options.nick + ':?$');
+
 var ircClient = new irc.Client(options.host, options.nick, {
     'channels': channels,
 }).addListener('error', function(err) {
@@ -33,7 +35,8 @@ var ircClient = new irc.Client(options.host, options.nick, {
 }).addListener('message', function(from, to, msg) {
     if (to.indexOf('#') != 0) return;
     var parts = msg.trim().split(/\s+/);
-    if (parts[0] != '!xkcd') return;
+    if (!(parts[0] == '!xkcd' || parts[0].match(nickRe)))
+        return;
     parts.shift();
     parts.push('site:xkcd.com');
     var query = {
