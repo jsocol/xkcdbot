@@ -17,7 +17,7 @@ var https = require('https'),
             abbr: 'c',
             help: 'Channels to join. Comma-separated, no #.'
         }
-    }).parseArgs();
+    }).nom();
 
 
 var channels = options.channels.split(',');
