@@ -1,0 +1,8 @@
+name: xkcdbot
+framework:
+  type: node
+  runtime: node08
+mem: 16M
+processes:
+  web: ~
+command: node xkcdbot.js -H irc.mozilla.org -n xkcdbot -c webdev,sumodev,input,mdndev,mozillians-dev
